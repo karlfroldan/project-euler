@@ -20,18 +20,12 @@ Which starting number, under one million, produces the longest chain?
 NOTE: Once the chain starts the terms are allowed to go above one million.
 -}
 
--- a function that does one step of the collatz conjecture
-doCollatz :: Int -> Int
-doCollatz n
-    | even n    = n `div` 2
-    | otherwise = 3 * n + 1
-
--- The collatz sequence
 collatz :: Int -> [Int]
-collatz 1 = [1]             -- if we're on 1, we should halt
-collatz n = n : collatz m   -- if we're not yet on 1,
-    where m = doCollatz n   -- append n to the list and do collatz on n
-
+collatz 1 = [1]                 -- if we're on 1, we should halt
+collatz n = n : collatz (f n)   -- if we're not yet on 1,
+    where f x                   -- append n to the list and do collatz on n
+            | even x    = x `div` 2   
+            | otherwise = 3 * x + 1
 -- maxCollatz takes an input n where it checks every collatz
 -- sequences from 1 to n and returns a tuple where (index, length)
 maxCollatz :: Int -> (Int, Int) 
@@ -39,9 +33,9 @@ maxCollatz n = foldr maxLength (0, 0) [1..n]
     where
         -- acc = (index of acc, length of acc)
         maxLength :: Int -> (Int, Int) -> (Int, Int) 
-        maxLength x acc = if length (collatz x) > snd acc
-                          then (x, length $ collatz x)
-                          else acc
+        maxLength x acc
+            | length (collatz x) > snd acc = (x, length $ collatz x)
+            | otherwise                    = acc
 
 main :: IO ()
 main = print $ maxCollatz 1000000
