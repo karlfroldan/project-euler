@@ -1,4 +1,6 @@
-main :: IO ()
-main = print primes
+import Algo.Primes
 
-primes = undefined
+main :: IO ()
+main = print (primes !! (idx - 1))
+  where
+    idx = 10001
