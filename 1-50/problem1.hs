@@ -7,3 +7,4 @@ main :: IO ()
 main = do
     let allMultiples = multiples 3 [1 .. 999] `union` multiples 5 [1 .. 999]
     print (sum allMultiples)
+    
